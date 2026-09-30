@@ -1,0 +1,335 @@
+<!DOCTYPE html><html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MineReady — Diagnostic PME</title><style>
+*{box-sizing:border-box;margin:0;padding:0}
+
+body{
+font-family:Arial,sans-serif;
+background:#f4f6f8;
+color:#17202a;
+line-height:1.5
+}
+
+header{
+background:#111827;
+color:white;
+padding:18px 6%;
+display:flex;
+justify-content:space-between;
+align-items:center
+}
+
+.logo{font-size:24px;font-weight:bold}
+
+.hero{
+background:white;
+padding:55px 6%;
+text-align:center
+}
+
+.hero h1{
+font-size:38px;
+margin-bottom:15px
+}
+
+.hero p{
+max-width:700px;
+margin:auto;
+color:#5b6472;
+font-size:17px
+}
+
+.container{
+max-width:850px;
+margin:35px auto;
+padding:0 20px
+}
+
+.card{
+background:white;
+padding:28px;
+border-radius:14px;
+box-shadow:0 3px 15px rgba(0,0,0,.08);
+margin-bottom:25px
+}
+
+.card h2{
+margin-bottom:20px
+}
+
+label{
+display:block;
+font-weight:bold;
+margin-top:16px
+}
+
+input,select{
+width:100%;
+padding:13px;
+margin-top:7px;
+border:1px solid #d1d5db;
+border-radius:8px;
+font-size:16px;
+background:white
+}
+
+button{
+width:100%;
+padding:15px;
+margin-top:25px;
+background:#2563eb;
+color:white;
+border:none;
+border-radius:8px;
+font-size:17px;
+font-weight:bold;
+cursor:pointer
+}
+
+button:hover{opacity:.9}
+
+#result{
+display:none
+}
+
+.score{
+text-align:center;
+font-size:42px;
+font-weight:bold;
+margin:15px 0
+}
+
+.result-box{
+padding:18px;
+border-radius:10px;
+margin-top:15px
+}
+
+.good{background:#e8f7ee}
+.warning{background:#fff6df}
+.danger{background:#fdecec}
+
+ul{
+padding-left:22px;
+margin-top:10px
+}
+
+li{margin-bottom:8px}
+
+footer{
+text-align:center;
+padding:30px;
+background:#111827;
+color:white;
+margin-top:50px
+}
+</style></head><body><header>
+<div class="logo">MineReady</div>
+<div>Diagnostic PME</div>
+</header><section class="hero">
+<h1>Votre projet est-il prêt ?</h1>
+<p>
+Évaluez rapidement les principaux risques de votre projet
+et obtenez un premier plan d'action.
+</p>
+</section><div class="container"><div class="card"><h2>1. Votre projet</h2><label>Nom du projet</label>
+<input id="project" type="text" placeholder="Ex : Boutique alimentaire">
+
+<label>Secteur</label>
+<select id="sector">
+
+<option value="">Choisissez</option>
+<option>Commerce</option>
+<option>Agriculture</option>
+<option>Services</option>
+<option>Technologie</option>
+<option>Transport</option>
+<option>Restauration</option>
+<option>Autre</option>
+</select><label>Ville</label>
+<input id="city" type="text" placeholder="Ex : Lubumbashi">
+
+<label>Stade du projet</label>
+<select id="stage">
+
+<option value="">Choisissez</option>
+<option>Idée</option>
+<option>Préparation</option>
+<option>Déjà lancé</option>
+</select></div><div class="card"><h2>2. Situation financière</h2><label>Capital disponible (USD)</label>
+<input id="capital" type="number" placeholder="Ex : 500">
+
+<label>Dépenses de démarrage prévues (USD)</label>
+<input id="startup" type="number" placeholder="Ex : 300">
+
+<label>Charges mensuelles prévues (USD)</label>
+<input id="expenses" type="number" placeholder="Ex : 150">
+
+<label>Chiffre d'affaires mensuel prévu (USD)</label>
+<input id="revenue" type="number" placeholder="Ex : 300">
+
+</div><div class="card"><h2>3. Marché</h2><label>Avez-vous identifié votre client cible ?</label>
+<select id="client">
+
+<option value="">Choisissez</option>
+<option value="yes">Oui</option>
+<option value="no">Non</option>
+</select><label>Avez-vous étudié vos concurrents ?</label>
+<select id="competition">
+
+<option value="">Choisissez</option>
+<option value="yes">Oui</option>
+<option value="no">Non</option>
+</select><label>Avez-vous déjà des clients ou prospects ?</label>
+<select id="prospects">
+
+<option value="">Choisissez</option>
+<option value="yes">Oui</option>
+<option value="no">Non</option>
+</select><button onclick="analyze()">Analyser mon projet</button>
+
+</div><div class="card" id="result"><h2>Résultat MineReady</h2><div class="score" id="score"></div><p id="summary"></p><div class="result-box good">
+<h3>Points solides</h3>
+<ul id="strengths"></ul>
+</div><div class="result-box warning">
+<h3>Points à améliorer</h3>
+<ul id="weaknesses"></ul>
+</div><div class="result-box danger">
+<h3>Vos 3 prochaines actions</h3>
+<ul id="actions"></ul>
+</div></div></div><footer>
+© 2026 MineReady — Diagnostic pour entrepreneurs
+</footer><script>
+
+function analyze(){
+
+let score=0;
+
+const project=document.getElementById("project").value;
+const sector=document.getElementById("sector").value;
+const city=document.getElementById("city").value;
+const stage=document.getElementById("stage").value;
+
+const capital=Number(document.getElementById("capital").value);
+const startup=Number(document.getElementById("startup").value);
+const expenses=Number(document.getElementById("expenses").value);
+const revenue=Number(document.getElementById("revenue").value);
+
+const client=document.getElementById("client").value;
+const competition=document.getElementById("competition").value;
+const prospects=document.getElementById("prospects").value;
+
+if(!project || !sector || !city || !stage ||
+!capital || !startup || !expenses || !revenue ||
+!client || !competition || !prospects){
+
+alert("Veuillez compléter toutes les informations avant de lancer le diagnostic.");
+return;
+}
+
+let strengths=[];
+let weaknesses=[];
+let actions=[];
+
+/* FINANCE */
+
+if(capital>=startup){
+score+=20;
+strengths.push("Votre capital couvre les dépenses de démarrage prévues.");
+}else{
+weaknesses.push("Votre capital actuel ne couvre pas vos dépenses de démarrage.");
+actions.push("Réduire les dépenses initiales ou trouver une source de financement adaptée.");
+}
+
+if(revenue>expenses){
+score+=15;
+strengths.push("Votre chiffre d'affaires prévu est supérieur à vos charges mensuelles.");
+}else{
+weaknesses.push("Vos charges mensuelles sont supérieures ou égales au chiffre d'affaires prévu.");
+actions.push("Revoir vos prix, vos ventes prévues et vos charges.");
+}
+
+/* MARCHE */
+
+if(client==="yes"){
+score+=15;
+strengths.push("Vous avez identifié votre clientèle cible.");
+}else{
+weaknesses.push("Votre clientèle cible n'est pas encore clairement définie.");
+actions.push("Définir précisément qui achètera votre produit ou service.");
+}
+
+if(competition==="yes"){
+score+=15;
+strengths.push("Vous avez commencé à étudier la concurrence.");
+}else{
+weaknesses.push("L'analyse de la concurrence manque encore.");
+actions.push("Identifier au moins 3 concurrents et comparer leurs prix, offres et avantages.");
+}
+
+if(prospects==="yes"){
+score+=15;
+strengths.push("Vous avez déjà des clients ou prospects.");
+}else{
+weaknesses.push("Vous n'avez pas encore validé suffisamment la demande.");
+actions.push("Parler à au moins 10 clients potentiels avant d'augmenter vos dépenses.");
+}
+
+/* PREPARATION */
+
+if(stage==="Déjà lancé"){
+score+=10;
+}else{
+score+=5;
+}
+
+/* RESULTAT */
+
+if(actions.length<3){
+actions.push("Suivre chaque semaine vos ventes, dépenses et trésorerie.");
+}
+
+actions=actions.slice(0,3);
+
+let level="";
+
+if(score>=75){
+level="Projet relativement bien préparé";
+}else if(score>=50){
+level="Projet nécessitant encore des améliorations";
+}else{
+level="Projet présentant plusieurs points à sécuriser";
+}
+
+document.getElementById("result").style.display="block";
+
+document.getElementById("score").innerHTML=score+"/100";
+
+document.getElementById("summary").innerHTML=
+"<strong>"+level+"</strong><br>"+
+"Projet : "+project+" — "+sector+" — "+city;
+
+document.getElementById("strengths").innerHTML=
+strengths.length
+? strengths.map(x=>"<li>"+x+"</li>").join("")
+: "<li>Aucun point solide identifié avec les informations fournies.</li>";
+
+document.getElementById("weaknesses").innerHTML=
+weaknesses.length
+? weaknesses.map(x=>"<li>"+x+"</li>").join("")
+: "<li>Aucun point critique détecté dans ce premier diagnostic.</li>";
+
+document.getElementById("actions").innerHTML=
+actions.map(x=>"<li>"+x+"</li>").join("");
+
+window.scrollTo({
+top:document.getElementById("result").offsetTop-20,
+behavior:"smooth"
+});
+
+}
+
+</script></body>
+  </html>
